@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cleanspeak-search
+  namespace: default
+spec:
+  ports:
+  - name: http
+    port: 9200
+  selector:
+    app: cleanspeak-search
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cleanspeak-search-discovery
+  namespace: default
+spec:
+  selector:
+    app: cleanspeak-search
+  ports:
+    - name: transport
+      port: 9300
+      protocol: TCP
+  clusterIP: None

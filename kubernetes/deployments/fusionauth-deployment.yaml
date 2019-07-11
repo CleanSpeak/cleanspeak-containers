@@ -1,0 +1,79 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cleanspeak
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: cleanspeak
+    spec:
+      initContainers:
+        # App has to wait for the database to be online "depends_on" workaround
+        - name: wait-for-db
+          image: darthcabs/tiny-tools:1
+          args:
+            - /bin/bash
+            - -c
+            - >
+              set -x;
+              while [[ "$(nc -zv cleanspeak-db 5432 &> /dev/null; echo $?)" != 0 ]]; do
+                echo '.'
+                sleep 15;
+              done
+        # App has to wait for elasticsearch to be online "depends_on" workaround
+        - name: wait-for-search
+          image: darthcabs/tiny-tools:1
+          args:
+            - /bin/bash
+            - -c
+            - >
+              set -x;
+              while [[ "$(nc -zv cleanspeak-search 9200 &> /dev/null; echo $?)" != 0 ]]; do
+                echo '.'
+                sleep 15;
+              done
+      containers:
+        - env:
+            - name: DATABASE_USER
+              value: cleanspeak
+            - name: DATABASE_PASSWORD
+              value: hkaLBM3RVnyYeYeqE3WI1w2e4Avpy0Wd5O3s3
+            - name: DATABASE_ROOT_PASSWORD
+            - name: DATABASE_ROOT_USER
+              value: postgres
+            - name: DATABASE_URL
+              value: jdbc:postgresql://cleanspeak-db:5432/cleanspeak
+            - name: CLEANSPEAK_MEMORY
+              value: 256M
+            - name: CLEANSPEAK_SEARCH_SERVERS
+              value: http://cleanspeak-search:9200
+          image: cleanspeak/cleanspeak-management-interface:latest
+          name: cleanspeak-management-interface
+          ports:
+            - containerPort: 8011
+          resources: {}
+        - env:
+            - name: DATABASE_USER
+              value: cleanspeak
+            - name: DATABASE_PASSWORD
+              value: hkaLBM3RVnyYeYeqE3WI1w2e4Avpy0Wd5O3s3
+            - name: DATABASE_ROOT_PASSWORD
+            - name: DATABASE_ROOT_USER
+              value: postgres
+            - name: DATABASE_URL
+              value: jdbc:postgresql://cleanspeak-db:5432/cleanspeak
+            - name: CLEANSPEAK_MEMORY
+              value: 256M
+            - name: CLEANSPEAK_SEARCH_SERVERS
+              value: http://cleanspeak-search:9200
+            image: cleanspeak/cleanspeak-webservice:latest
+            name: cleanspeak-webservice
+            ports:
+              - containerPort: 8001
+            resources: {}
+      restartPolicy: Always
