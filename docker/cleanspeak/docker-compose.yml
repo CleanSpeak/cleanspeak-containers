@@ -16,7 +16,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   search:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.1
     environment:
       cluster.name: cleanspeak
       bootstrap.memory_lock: "true"
@@ -35,7 +35,7 @@ services:
       - es_data:/usr/share/elasticsearch/data
 
   cleanspeak-webservice:
-    image: cleanspeak/cleanspeak-webservice:latest
+    image: cleanspeak/cleanspeak-webservice:dev
     depends_on:
       - db
       - search
@@ -48,6 +48,7 @@ services:
       CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
       CLEANSPEAK_SEARCH_SERVERS: http://search:9200
       CLEANSPEAK_URL: http://cleanspeak-ws:8001
+      LICENSE_ID: ${LICENSE_ID}
     networks:
       - db
       - search
@@ -58,7 +59,7 @@ services:
       - cs_config:/usr/local/inversoft/config
   
   cleanspeak-management-interface:
-    image: cleanspeak/cleanspeak-management-interface:latest
+    image: cleanspeak/cleanspeak-management-interface:dev
     depends_on:
       - db
       - search
@@ -71,6 +72,7 @@ services:
       CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
       CLEANSPEAK_SEARCH_SERVERS: http://search:9200
       CLEANSPEAK_URL: http://cleanspeak-mi:9011
+      LICENSE_ID: ${LICENSE_ID}
     networks:
       - db
       - search
