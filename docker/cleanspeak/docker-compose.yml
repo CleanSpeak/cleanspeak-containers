@@ -4,9 +4,9 @@ services:
   db:
     image: postgres:11-alpine
     environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      - PGDATA: /var/lib/postgresql/data/pgdata
+      - POSTGRES_USER: ${POSTGRES_USER}
+      - POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
     networks:
@@ -40,15 +40,15 @@ services:
       - db
       - search
     environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/cleanspeak
-      DATABASE_ROOT_USER: ${POSTGRES_USER}
-      DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
-      CLEANSPEAK_SEARCH_SERVERS: http://search:9200
-      CLEANSPEAK_URL: http://cleanspeak-ws:8001
-      LICENSE_ID: ${LICENSE_ID}
+      - DATABASE_URL: jdbc:postgresql://db:5432/cleanspeak
+      - DATABASE_ROOT_USER: ${POSTGRES_USER}
+      - DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+      - DATABASE_USER: ${DATABASE_USER}
+      - DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      - CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
+      - CLEANSPEAK_SEARCH_SERVERS: http://search:9200
+      - CLEANSPEAK_URL: http://cleanspeak-ws:8001
+      - LICENSE_ID: ${LICENSE_ID}
     networks:
       - db
       - search
@@ -64,15 +64,15 @@ services:
       - db
       - search
     environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/cleanspeak
-      DATABASE_ROOT_USER: ${POSTGRES_USER}
-      DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_USER: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
-      CLEANSPEAK_SEARCH_SERVERS: http://search:9200
-      CLEANSPEAK_URL: http://cleanspeak-mi:9011
-      LICENSE_ID: ${LICENSE_ID}
+      - DATABASE_URL: jdbc:postgresql://db:5432/cleanspeak
+      - DATABASE_ROOT_USER: ${POSTGRES_USER}
+      - DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
+      - DATABASE_USER: ${DATABASE_USER}
+      - DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      - CLEANSPEAK_MEMORY: ${CLEANSPEAK_MEMORY}
+      - CLEANSPEAK_SEARCH_SERVERS: http://search:9200
+      - CLEANSPEAK_URL: http://cleanspeak-mi:9011
+      - LICENSE_ID: ${LICENSE_ID}
     networks:
       - db
       - search
