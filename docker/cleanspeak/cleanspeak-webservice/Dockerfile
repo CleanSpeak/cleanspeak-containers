@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
 ###### Install CleanSpeak Webservice #################
-RUN export CLEANSPEAK_VERSION=3.23.1 \
- && curl -Sk --progress-bar https://storage.googleapis.com/inversoft_products_j098230498/products/cleanspeak/${CLEANSPEAK_VERSION}/cleanspeak-webservice_${CLEANSPEAK_VERSION}-1_all.deb -o cleanspeak-webservice.deb \
+ARG CLEANSPEAK_VERSION
+RUN curl -Sk --progress-bar "https://storage.googleapis.com/inversoft_products_j098230498/products/cleanspeak/${CLEANSPEAK_VERSION}/cleanspeak-webservice_${CLEANSPEAK_VERSION}-1_all.deb" -o cleanspeak-webservice.deb \
  && dpkg -i cleanspeak-webservice.deb \
  && rm cleanspeak-webservice.deb
 
