@@ -28,7 +28,7 @@
 # Build: (use any variation of the following)
 #   > docker build -t cleanspeak/cleanspeak-management-interface-mysql:3.28.1 .
 #   > docker build -t cleanspeak/cleanspeak-management-interface-mysql:latest .
-#   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.18 -t cleanspeak/cleanspeak-management-interface-mysql:latest .
+#   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.12 -t cleanspeak/cleanspeak-management-interface-mysql:latest .
 #
 # Run:
 #  > docker run -p 9011:9011 -it cleanspeak/cleanspeak-management-interface-mysql
