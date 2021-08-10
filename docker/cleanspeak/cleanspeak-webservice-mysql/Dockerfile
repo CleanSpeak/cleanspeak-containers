@@ -42,4 +42,4 @@ FROM cleanspeak/cleanspeak-webservice:latest
 # Do not change this version, this is the version that will be expected in the classpath at runtime.
 ARG MYSQL_CONNECTOR_VERSION=8.0.12
 
-ADD --chown=inversoft:inversoft https://storage.googleapis.com/inversoft_products_j098230498/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/inversoft/cleanspeak-webservice/apache-tomcat/lib
+ADD --chown=inversoft:inversoft https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/inversoft/cleanspeak-webservice/apache-tomcat/lib
