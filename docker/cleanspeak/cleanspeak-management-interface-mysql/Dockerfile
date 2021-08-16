@@ -31,15 +31,12 @@
 #   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.12 -t cleanspeak/cleanspeak-management-interface-mysql:latest .
 #
 # Run:
-#  > docker run -p 9011:9011 -it cleanspeak/cleanspeak-management-interface-mysql
-#
-# Publish:
-#  DO NOT PUBLISH
+#  > docker run -p 8011:8011 -it cleanspeak/cleanspeak-management-interface-mysql
 #
 
-FROM cleanspeak/cleanspeak-management-interface:latest
+FROM cleanspeak/cleanspeak-management-interface:3.31.0
 
 # Do not change this version, this is the version that will be expected in the classpath at runtime.
 ARG MYSQL_CONNECTOR_VERSION=8.0.12
 
-ADD --chown=inversoft:inversoft https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/inversoft/cleanspeak-management-interface/apache-tomcat/lib
+ADD --chown=cleanspeak:cleanspeak https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/cleanspeak/cleanspeak-management-interface/apache-tomcat/lib

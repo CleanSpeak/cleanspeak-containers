@@ -1,5 +1,5 @@
 #
-# CleanSpeak Webservice  Dockerfile including the MySQL connector
+# CleanSpeak Webservice Dockerfile including the MySQL connector
 
 # Note:
 # -----------------------------------------------------------------------------
@@ -31,13 +31,10 @@
 #   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.12 -t cleanspeak/cleanspeak-webservice-mysql:latest .
 #
 # Run:
-#  > docker run -p 9011:9011 -it cleanspeak/cleanspeak-webservice-mysql
-#
-# Publish:
-#  DO NOT PUBLISH
+#  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-webservice-mysql
 #
 
-FROM cleanspeak/cleanspeak-webservice:latest
+FROM cleanspeak/cleanspeak-webservice:3.31.0
 
 # Do not change this version, this is the version that will be expected in the classpath at runtime.
 ARG MYSQL_CONNECTOR_VERSION=8.0.12
