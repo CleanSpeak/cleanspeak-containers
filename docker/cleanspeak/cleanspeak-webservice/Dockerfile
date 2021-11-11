@@ -3,21 +3,21 @@
 #
 # Build:
 #   > docker pull ubuntu:focal
-#   > docker build -t cleanspeak/cleanspeak-webservice:3.99.9 .
+#   > docker build -t cleanspeak/cleanspeak-webservice:3.32.0 .
 #   > docker build -t cleanspeak/cleanspeak-webservice:latest .
 #
 # Run:
 #  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-webservice
 #
 # Publish:
-#   > docker push cleanspeak/cleanspeak-webservice:3.99.9
+#   > docker push cleanspeak/cleanspeak-webservice:3.32.0
 #   > docker push cleanspeak/cleanspeak-webservice:latest
 #
 
 ###### Setup the java and fusionauth-app base #####################################################
 FROM ubuntu:focal as build
 
-ARG CLEANSPEAK_VERSION=3.99.9
+ARG CLEANSPEAK_VERSION=3.32.0
 ARG JDK_MODULES=java.base,java.compiler,java.desktop,java.instrument,java.management,java.naming,java.rmi,java.security.jgss,java.security.sasl,java.sql,java.xml.crypto,jdk.attach,jdk.crypto.ec,jdk.jdi,jdk.localedata,jdk.zipfs
 RUN ARCH="$(dpkg --print-architecture)"; \
     case "${ARCH}" in \
