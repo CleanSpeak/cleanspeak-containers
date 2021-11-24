@@ -20,7 +20,7 @@ project(group: "com.inversoft.cleanspeak", name: "cleanspeak-containers", versio
   }
 
   publishWorkflow {
-    subversion(repository: "http://svn.inversoft.org/savant")
+    subversion(repository: "https://external.svn.fusionauth.io")
   }
 
   publications {
