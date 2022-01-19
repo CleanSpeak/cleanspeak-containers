@@ -28,7 +28,7 @@
 # Build: (use any variation of the following)
 #   > docker build -t cleanspeak/cleanspeak-webservice-mysql:3.32.0 .
 #   > docker build -t cleanspeak/cleanspeak-webservice-mysql:latest .
-#   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.12 -t cleanspeak/cleanspeak-webservice-mysql:latest .
+#   > docker build --build-arg MYSQL_CONNECTOR_VERSION=8.0.21 -t cleanspeak/cleanspeak-webservice-mysql:latest .
 #
 # Run:
 #  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-webservice-mysql
@@ -37,6 +37,6 @@
 FROM cleanspeak/cleanspeak-webservice:3.32.0
 
 # Do not change this version, this is the version that will be expected in the classpath at runtime.
-ARG MYSQL_CONNECTOR_VERSION=8.0.12
+ARG MYSQL_CONNECTOR_VERSION=8.0.21
 
 ADD --chown=inversoft:inversoft https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/inversoft/cleanspeak-webservice/apache-tomcat/lib
