@@ -65,58 +65,13 @@ target(name: "release", description: "Releases a full version of the project") {
 }
 
 target(name: "publish", description: "Releases the Docker images to DockerHub") {
-  // Update to the latest ubuntu:focal build
-  if (!cleanExecute("docker", "pull", "ubuntu:focal")) {
-    fail("Failed to pull the latest Ubuntu image.")
-  }
-
-  // Build images
-  if (!cleanExecute("docker", "build", "-t", "cleanspeak/cleanspeak-management-interface:${project.version}" as String, "./docker/cleanspeak/cleanspeak-management-interface")) {
-    fail("Failed to build Docker image for cleanspeak-management-interface [${project.version}]")
-  }
-
-  if (!cleanExecute("docker", "build", "-t", "cleanspeak/cleanspeak-webservice:${project.version}" as String, "./docker/cleanspeak/cleanspeak-webservice")) {
-    fail("Failed to build Docker image for cleanspeak-webservice [${project.version}]")
-  }
-
-  // Don't build a pre-release latest tag
-  if (!project.version.preRelease) {
-    if (!cleanExecute("docker", "tag", "cleanspeak/cleanspeak-management-interface:${project.version}" as String, "cleanspeak/cleanspeak-management-interface:latest" as String)) {
-      fail("Failed to build Docker image for cleanspeak-management-interface [latest]")
-    }
-    if (!cleanExecute("docker", "tag", "cleanspeak/cleanspeak-webservice:${project.version}" as String, "cleanspeak/cleanspeak-webservice:latest" as String)) {
-      fail("Failed to build Docker image for cleanspeak-webservice [latest]")
-    }
-  }
-
-  // Push images
-  if (!switches.has("dryRun")) {
-    if (!cleanExecute("docker", "push", "cleanspeak/cleanspeak-management-interface:${project.version}" as String)) {
-      fail("Failed to push Docker image for cleanspeak-management-interface [${project.version}]")
-    }
-    if (!cleanExecute("docker", "push", "cleanspeak/cleanspeak-webservice:${project.version}" as String)) {
-      fail("Failed to push Docker image for cleanspeak-webservice[${project.version}]")
-    }
-
-
-    // Don't push a pre-release latest tag
-    if (!project.version.preRelease) {
-      if (!cleanExecute("docker", "push", "cleanspeak/cleanspeak-management-interface:latest" as String)) {
-        fail("Failed to push Docker image for cleanspeak-management-interface [latest]")
-      }
-      if (!cleanExecute("docker", "push", "cleanspeak/cleanspeak-webservice:latest" as String)) {
-        fail("Failed to push Docker image for cleanspeak-webservice [latest]")
-      }
-    }
-  }
-}
-
-boolean cleanExecute(String... args) {
-  ProcessBuilder pb = new ProcessBuilder(args).inheritIO().directory(new File('.'))
+  def args = ["./publish.sh", "${project.version}" as String , "${project.version.preRelease}" as String]
+  ProcessBuilder pb = new ProcessBuilder(args).inheritIO().directory(new File('./docker/cleanspeak'))
 
   def process = pb.start()
   process.consumeProcessOutput(System.out, System.err)
   process.waitFor()
-  return process.exitValue() == 0
+  if (process.exitValue() != 0) {
+    fail("Failed to publish Docker [${project.version}]")
+  }
 }
-
