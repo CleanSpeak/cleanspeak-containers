@@ -1,0 +1,71 @@
+name: Publish Docker
+on:
+  push:
+    paths:
+      - 'docker/cleanspeak/release-trigger'
+concurrency: docker-concurrency-group
+jobs:
+  multiarch-build:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+       name: Set variabless
+       run: |
+         echo "CLEANSPEAK_VERSION=$(cat docker/cleanspeak/release-trigger | grep version= | awk -F= {'print $2'})" >> $GITHUB_ENV
+         echo "CLEANSPEAK_VERSION=$(cat docker/cleanspeak/release-trigger | grep version= | awk -F= {'print $2'})" >> $GITHUB_ENV
+         echo "CLEANSPEAK_TAG_SUFFIX=$(cat docker/cleanspeak/release-trigger | grep tagSuffix= | awk -F= {'print $2'})" >> $GITHUB_ENV
+      -
+        name: Build version tags
+        run: |
+          echo "CLEANSPEAK_MI_TAGS=cleanspeak/cleanspeak-management-interface:${{ env.CLEANSPEAK_VERSION }}${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+          echo "CLEANSPEAK_WS_TAGS=cleanspeak/cleanspeak-webservice:${{ env.CLEANSPEAK_VERSION }}${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+      -
+        name: Optional :latest tag
+        if: ${{ env.CLEANSPEAK_PRE_RELEASE == 'false' }}
+        run: |
+          echo "CLEANSPEAK_MI_TAGS=${{ env.CLEANSPEAK_MI_TAGS }},cleanspeak/cleanspeak-management-interface:latest${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+          echo "CLEANSPEAK_WS_TAGS=${{ env.CLEANSPEAK_WS_TAGS }},cleanspeak/cleanspeak-webservice:latest${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+      -
+        name: Job summary
+        run: | 
+          echo "Version: ${{ env.CLEANSPEAK_VERSION }}"
+          echo "PreRelease: ${{ env.CLEANSPEAK_VERSION }}"
+          echo "Managemewnt Interface Tags: ${{ env.CLEANSPEAK_MI_TAGS }}"
+          echo "Webservice Tags: ${{ env.CLEANSPEAK_WS_TAGS }}"
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push cleanspeak-management-interface
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/cleanspeak/cleanspeak-management-interface/Dockerfile
+          build-args: CLEANSPEAK_VERSION=${{ env.CLEANSPEAK_VERSION }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+          push: true
+          tags: ${{ env.CLEANSPEAK_MI_TAGS }}
+      -
+        name: Build and push cleanspeak-webservice
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/cleanspeak/cleanspeak-webservice/Dockerfile
+          build-args: CLEANSPEAK_VERSION=${{ env.CLEANSPEAK_VERSION }}
+          platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
+          push: true
+          tags: ${{ env.CLEANSPEAK_WS_TAGS }}
