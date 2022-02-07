@@ -11,8 +11,8 @@ See [docker-compose.yml](https://raw.githubusercontent.com/CleanSpeak/cleanspeak
 Review our [Docker Install Guide](https://cleanspeak.com/docs/3.x/tech/installation-guide/docker) for additional assistance.
 
 ```bash
-curl -o docker-compose.yml https://raw.githubusercontent.com/CleanSpeak/cleanspeak-containers/master/docker/docker-compose.yml
-curl -o .env https://raw.githubusercontent.com/CleanSpeak/cleanspeak-containers/master/docker/.env
+curl -o docker-compose.yml https://raw.githubusercontent.com/CleanSpeak/cleanspeak-containers/master/docker/cleanspeak/docker-compose.yml
+curl -o .env https://raw.githubusercontent.com/CleanSpeak/cleanspeak-containers/master/docker/cleanspeak/.env
 docker-compose up
 ```
 
