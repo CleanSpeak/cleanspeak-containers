@@ -50,7 +50,8 @@ spec:
               value: jdbc:postgresql://cleanspeak-db:5432/cleanspeak
             - name: CLEANSPEAK_MEMORY
               value: 256M
-            - name: CLEANSPEAK_SEARCH_SERVERS
+            # Prior to version 3.30.0, use CLEANSPEAK_SEARCH_SERVERS
+            - name: SEARCH_SERVERS
               value: http://cleanspeak-search:9200
           image: cleanspeak/cleanspeak-management-interface:latest
           name: cleanspeak-management-interface
