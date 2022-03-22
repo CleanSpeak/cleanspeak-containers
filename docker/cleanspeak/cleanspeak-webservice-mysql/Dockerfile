@@ -1,6 +1,6 @@
 #
 # CleanSpeak Webservice Dockerfile including the MySQL connector
-
+#
 # Note:
 # -----------------------------------------------------------------------------
 # The MySQL JDBC connector is not bundled with CleanSpeak due to the GPL
@@ -39,4 +39,4 @@ FROM cleanspeak/cleanspeak-webservice:3.32.1
 # Do not change this version, this is the version that will be expected in the classpath at runtime.
 ARG MYSQL_CONNECTOR_VERSION=8.0.21
 
-ADD --chown=inversoft:inversoft https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/inversoft/cleanspeak-webservice/apache-tomcat/lib
+ADD --chown=cleanspeak:cleanspeak https://files.fusionauth.io/mysql/mysql-connector-java-${MYSQL_CONNECTOR_VERSION}.jar /usr/local/cleanspeak/cleanspeak-webservice/web/WEB-INF/lib
