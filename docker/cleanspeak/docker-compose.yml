@@ -11,7 +11,7 @@ services:
     #    ports:
     #      - 5432:5432
     networks:
-      - db
+      - db_net
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -28,7 +28,7 @@ services:
     #      - 9200:9200
     #      - 9300:9300
     networks:
-      - search
+      - es_net
     restart: unless-stopped
     ulimits:
       memlock:
@@ -54,8 +54,8 @@ services:
       LICENSE_ID: ${LICENSE_ID}
       SEARCH_SERVERS: http://search:9200
     networks:
-      - db
-      - search
+      - db_net
+      - es_net
     restart: unless-stopped
     ports:
       - 8011:8011
@@ -78,8 +78,8 @@ services:
       LICENSE_ID: ${LICENSE_ID}
       SEARCH_SERVERS: http://search:9200
     networks:
-      - db
-      - search
+      - db_net
+      - es_net
     restart: unless-stopped
     ports:
       - 8001:8001
@@ -87,9 +87,9 @@ services:
       - cs_config:/usr/local/cleanspeak/config
 
 networks:
-  db:
+  db_net:
     driver: bridge
-  search:
+  es_net:
     driver: bridge
 
 volumes:
