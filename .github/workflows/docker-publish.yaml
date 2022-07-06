@@ -36,7 +36,7 @@ jobs:
         run: | 
           echo "Version: ${{ env.CLEANSPEAK_VERSION }}"
           echo "PreRelease: ${{ env.CLEANSPEAK_PRE_RELEASE }}"
-          echo "Managemewnt Interface Tags: ${{ env.CLEANSPEAK_MI_TAGS }}"
+          echo "Management Interface Tags: ${{ env.CLEANSPEAK_MI_TAGS }}"
           echo "Webservice Tags: ${{ env.CLEANSPEAK_WS_TAGS }}"
       -
         name: Set up QEMU
