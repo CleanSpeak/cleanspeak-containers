@@ -13,7 +13,7 @@
 #  > docker run -p 8011:8011 -it cleanspeak/cleanspeak-management-interface
 #
 # Publish:
-#   > docker push cleanspeak/cleanspeak-management-interface:3.32.4
+#   > docker push cleanspeak/cleanspeak-management-interface:3.32.5
 #   > docker push cleanspeak/cleanspeak-management-interface:latest
 #
 
@@ -21,7 +21,7 @@
 FROM --platform=$BUILDPLATFORM ubuntu:focal as build
 
 ARG BUILDPLATFORM
-ARG CLEANSPEAK_VERSION=3.32.4
+ARG CLEANSPEAK_VERSION=3.32.5
 ARG JDK_MODULES=java.base,java.compiler,java.desktop,java.instrument,java.logging,java.management,java.naming,java.rmi,java.security.jgss,java.security.sasl,java.scripting,java.sql,java.xml.crypto,jdk.attach,jdk.crypto.ec,jdk.dynalink,jdk.jcmd,jdk.jdi,jdk.localedata,jdk.jpackage,jdk.unsupported,jdk.zipfs
 ARG TARGETPLATFORM
 ARG TARGETARCH
