@@ -19,6 +19,7 @@ project(group: "com.inversoft.cleanspeak", name: "cleanspeak-containers", versio
     fetch {
       cache()
       url(url: "https://repository.savantbuild.org")
+      maven()
     }
     publish {
       cache()
