@@ -2,7 +2,7 @@
 # CleanSpeak Webservice Dockerfile
 #
 # Build:
-#   > docker pull ubuntu:focal
+#   > docker pull ubuntu:jammy
 #   > docker buildx build --platform=linux/arm64 -t cleanspeak/cleanspeak-webservice:3.32.0 .
 #   > docker buildx build --platform=linux/arm64  -t fcleanspeak/cleanspeak-webservice:latest .
 #
@@ -18,7 +18,7 @@
 #
 
 ###### Setup the java and fusionauth-app base #####################################################
-FROM --platform=$BUILDPLATFORM ubuntu:focal as build
+FROM --platform=$BUILDPLATFORM ubuntu:jammy as build
 
 ARG BUILDPLATFORM
 ARG CLEANSPEAK_VERSION=3.32.6
@@ -87,8 +87,13 @@ RUN case "${BUILDPLATFORM}" in \
      && unzip -nq /tmp/cleanspeak-webservice.zip -d /usr/local/cleanspeak
 
 ###### Use Ubuntu latest and only copy in what we need to reduce the layer size ###################
-FROM ubuntu:focal
-RUN useradd -d /usr/local/cleanspeak -U cleanspeak
+FROM ubuntu:jammy
+RUN apt-get update \
+    && apt-get -y install --no-install-recommends curl \
+    && apt-get -y upgrade \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists \
+    && useradd -d /usr/local/cleanspeak -U cleanspeak
 COPY --from=build /opt/openjdk /opt/openjdk
 COPY --chown=cleanspeak:cleanspeak --from=build /usr/local/cleanspeak /usr/local/cleanspeak
 
