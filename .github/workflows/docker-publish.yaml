@@ -58,7 +58,7 @@ jobs:
           context: .
           file: ./docker/cleanspeak/cleanspeak-management-interface/Dockerfile
           build-args: CLEANSPEAK_VERSION=${{ env.CLEANSPEAK_VERSION }}
-          platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           tags: ${{ env.CLEANSPEAK_MI_TAGS }}
       -
