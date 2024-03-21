@@ -94,7 +94,7 @@ RUN apt-get update \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists \
     && useradd -d /usr/local/cleanspeak -U cleanspeak
-COPY --from=build /opt/openjdk /opt/openjdk
+COPY --chown=cleanspeak:cleanspeak --from=build /opt/openjdk /opt/openjdk
 COPY --chown=cleanspeak:cleanspeak --from=build /usr/local/cleanspeak /usr/local/cleanspeak
 
 ###### Connect the log file to stdout #############################################################
@@ -110,4 +110,4 @@ USER cleanspeak
 ENV CLEANSPEAK_USE_GLOBAL_JAVA=1
 ENV JAVA_HOME=/opt/openjdk
 ENV PATH=$PATH:$JAVA_HOME/bin
-CMD ["/usr/local/cleanspeak/cleanspeak-management-interface/apache-tomcat/bin/catalina.sh", "run"]
+CMD ["/usr/local/cleanspeak/cleanspeak-management-interface/bin/start.sh"]
