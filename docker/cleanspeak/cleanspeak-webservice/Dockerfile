@@ -94,7 +94,7 @@ RUN apt-get update \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists \
     && useradd -d /usr/local/cleanspeak -U cleanspeak
-COPY --chown=cleanspeak:cleanspeak --from=build /opt/openjdk /opt/openjdk
+COPY --from=build /opt/openjdk /opt/openjdk
 COPY --chown=cleanspeak:cleanspeak --from=build /usr/local/cleanspeak /usr/local/cleanspeak
 
 ###### Connect the log file to stdout #############################################################
