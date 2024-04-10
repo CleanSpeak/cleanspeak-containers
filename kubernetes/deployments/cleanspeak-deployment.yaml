@@ -48,7 +48,7 @@ spec:
               value: postgres
             - name: DATABASE_URL
               value: jdbc:postgresql://cleanspeak-db:5432/cleanspeak
-            - name: CLEANSPEAK_MEMORY
+            - name: CLEANSPEAK_APP_MEMORY
               value: 256M
             # Prior to version 3.30.0, use CLEANSPEAK_SEARCH_SERVERS
             - name: SEARCH_SERVERS
@@ -68,7 +68,7 @@ spec:
               value: postgres
             - name: DATABASE_URL
               value: jdbc:postgresql://cleanspeak-db:5432/cleanspeak
-            - name: CLEANSPEAK_MEMORY
+            - name: CLEANSPEAK_APP_MEMORY
               value: 256M
             - name: CLEANSPEAK_SEARCH_SERVERS
               value: http://cleanspeak-search:9200
