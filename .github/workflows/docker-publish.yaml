@@ -23,21 +23,18 @@ jobs:
       -
         name: Build version tags
         run: |
-          echo "CLEANSPEAK_MI_TAGS=cleanspeak/cleanspeak-management-interface:${{ env.CLEANSPEAK_VERSION }}${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
-          echo "CLEANSPEAK_WS_TAGS=cleanspeak/cleanspeak-webservice:${{ env.CLEANSPEAK_VERSION }}${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+          echo "CLEANSPEAK_TAGS=cleanspeak/cleanspeak-app:${{ env.CLEANSPEAK_VERSION }}${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
       -
         name: Optional :latest tag
         if: ${{ env.CLEANSPEAK_PRE_RELEASE == 'false' }}
         run: |
-          echo "CLEANSPEAK_MI_TAGS=${{ env.CLEANSPEAK_MI_TAGS }},cleanspeak/cleanspeak-management-interface:latest${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
-          echo "CLEANSPEAK_WS_TAGS=${{ env.CLEANSPEAK_WS_TAGS }},cleanspeak/cleanspeak-webservice:latest${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
+          echo "CLEANSPEAK_TAGS=${{ env.CLEANSPEAK_TAGS }},cleanspeak/cleanspeak-app:latest${{ env.CLEANSPEAK_TAG_SUFFIX }}" >> $GITHUB_ENV
       -
         name: Job summary
         run: | 
           echo "Version: ${{ env.CLEANSPEAK_VERSION }}"
           echo "PreRelease: ${{ env.CLEANSPEAK_PRE_RELEASE }}"
-          echo "Management Interface Tags: ${{ env.CLEANSPEAK_MI_TAGS }}"
-          echo "Webservice Tags: ${{ env.CLEANSPEAK_WS_TAGS }}"
+          echo "App Tags: ${{ env.CLEANSPEAK_TAGS }}"
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -52,22 +49,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Build and push cleanspeak-management-interface
+        name: Build and push cleanspeak-app
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/cleanspeak/cleanspeak-management-interface/Dockerfile
+          file: ./docker/cleanspeak/cleanspeak/Dockerfile
           build-args: CLEANSPEAK_VERSION=${{ env.CLEANSPEAK_VERSION }}
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          tags: ${{ env.CLEANSPEAK_MI_TAGS }}
-      -
-        name: Build and push cleanspeak-webservice
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./docker/cleanspeak/cleanspeak-webservice/Dockerfile
-          build-args: CLEANSPEAK_VERSION=${{ env.CLEANSPEAK_VERSION }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: true
-          tags: ${{ env.CLEANSPEAK_WS_TAGS }}
+          tags: ${{ env.CLEANSPEAK_TAGS }}

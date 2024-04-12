@@ -37,8 +37,8 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
 
-  cleanspeak-management-interface:
-    image: cleanspeak/cleanspeak-management-interface:latest
+  cleanspeak:
+    image: cleanspeak/cleanspeak-app:latest
     depends_on:
       - db
       - search
@@ -48,31 +48,7 @@ services:
       DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
       DATABASE_USERNAME: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      CLEANSPEAK_MANAGEMENT_INTERFACE_MEMORY: ${CLEANSPEAK_APP_MEMORY}
-      CLEANSPEAK_WEBSERVICE_URLS: http://cleanspeak-webservice:8001
-      LICENSE_ID: ${LICENSE_ID}
-      SEARCH_SERVERS: http://search:9200
-    networks:
-      - db_net
-      - es_net
-    restart: unless-stopped
-    ports:
-      - 8011:8011
-    volumes:
-      - cs_config:/usr/local/cleanspeak/config
-
-  cleanspeak-webservice:
-    image: cleanspeak/cleanspeak-webservice:latest
-    depends_on:
-      - db
-      - search
-    environment:
-      DATABASE_URL: jdbc:postgresql://db:5432/cleanspeak
-      DATABASE_ROOT_USERNAME: ${POSTGRES_USER}
-      DATABASE_ROOT_PASSWORD: ${POSTGRES_PASSWORD}
-      DATABASE_USERNAME: ${DATABASE_USER}
-      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      CLEANSPEAK_WEBSERVICE_MEMORY: ${CLEANSPEAK_APP_MEMORY}
+      CLEANSPEAK_APP_MEMORY: ${CLEANSPEAK_APP_MEMORY}
       LICENSE_ID: ${LICENSE_ID}
       SEARCH_SERVERS: http://search:9200
     networks:

@@ -1,5 +1,5 @@
 #
-# CleanSpeak Webservice Dockerfile
+# CleanSpeak App Dockerfile
 #
 # Build:
 #   > docker pull ubuntu:jammy
@@ -82,9 +82,9 @@ RUN case "${BUILDPLATFORM}" in \
        --module-path /tmp/openjdk/jmods/ \
        --add-modules ${JDK_MODULES} \
        --output /opt/openjdk \
-     && curl -LfsSo /tmp/cleanspeak-webservice.zip https://files.fusionauth.io/products/cleanspeak/${CLEANSPEAK_VERSION}/cleanspeak-webservice-${CLEANSPEAK_VERSION}.zip \
-     && mkdir -p /usr/local/cleanspeak/cleanspeak-webservice \
-     && unzip -nq /tmp/cleanspeak-webservice.zip -d /usr/local/cleanspeak
+     && curl -LfsSo /tmp/cleanspeak-app.zip https://files.fusionauth.io/products/cleanspeak/${CLEANSPEAK_VERSION}/cleanspeak-app-${CLEANSPEAK_VERSION}.zip \
+     && mkdir -p /usr/local/cleanspeak/cleanspeak-app \
+     && unzip -nq /tmp/cleanspeak-app.zip -d /usr/local/cleanspeak
 
 ###### Use Ubuntu latest and only copy in what we need to reduce the layer size ###################
 FROM ubuntu:jammy
@@ -99,15 +99,15 @@ COPY --chown=cleanspeak:cleanspeak --from=build /usr/local/cleanspeak /usr/local
 
 ###### Connect the log file to stdout #############################################################
 RUN mkdir -p /usr/local/cleanspeak/logs \
-  && touch /usr/local/cleanspeak/logs/cleanspeak-webservice.log \
-  && ln -sf /dev/stdout /usr/local/cleanspeak/logs/cleanspeak-webservice.log
+  && touch /usr/local/cleanspeak/logs/cleanspeak-app.log \
+  && ln -sf /dev/stdout /usr/local/cleanspeak/logs/cleanspeak-app.log
 
-###### Start FusionAuth App #######################################################################
-LABEL description="Create an image running CleanSpeak Webservice. Installs CleanSpeak Webservice"
+###### Start CleanSpeak App #######################################################################
+LABEL description="Create an image running CleanSpeak App. Installs CleanSpeak App"
 LABEL maintainer="CleanSpeak <dev@cleanspeak.com>"
 EXPOSE 8011
 USER cleanspeak
 ENV CLEANSPEAK_USE_GLOBAL_JAVA=1
 ENV JAVA_HOME=/opt/openjdk
 ENV PATH=$PATH:$JAVA_HOME/bin
-CMD ["/usr/local/cleanspeak/cleanspeak-webservice/bin/start.sh"]
+CMD ["/usr/local/cleanspeak/cleanspeak-app/bin/start.sh"]

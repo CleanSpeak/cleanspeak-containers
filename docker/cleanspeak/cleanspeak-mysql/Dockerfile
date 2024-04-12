@@ -1,5 +1,5 @@
 #
-# CleanSpeak Management Interface Dockerfile including the MySQL connector
+# CleanSpeak Webservice Dockerfile including the MySQL connector
 #
 # Note:
 # -----------------------------------------------------------------------------
@@ -22,12 +22,12 @@
 # -----------------------------------------------------------------------------
 #
 # Build:
-#   > docker build -t cleanspeak/cleanspeak-management-interface-mysql:4.0.0 .
-#   > docker build -t cleanspeak/cleanspeak-management-interface-mysql:latest .
+#   > docker build -t cleanspeak/cleanspeak-webservice-mysql:4.0.0 .
+#   > docker build -t cleanspeak/cleanspeak-webservice-mysql:latest .
 #
 # Run:
-#  > docker run -p 8011:8011 -it cleanspeak/cleanspeak-management-interface-mysql
+#  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-webservice-mysql
 #
 
-FROM cleanspeak/cleanspeak-management-interface:4.0.0
-ADD --chown=cleanspeak:cleanspeak https://search.maven.org/remotecontent?filepath=com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar /usr/local/cleanspeak/cleanspeak-management-interface/lib
+FROM cleanspeak/cleanspeak-app:4.0.0
+ADD --chown=cleanspeak:cleanspeak https://search.maven.org/remotecontent?filepath=com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar /usr/local/cleanspeak/cleanspeak-app/lib
