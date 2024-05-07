@@ -3,18 +3,16 @@
 #
 # Build:
 #   > docker pull ubuntu:jammy
-#   > docker buildx build --platform=linux/arm64 -t cleanspeak/cleanspeak-webservice:3.32.0 .
-#   > docker buildx build --platform=linux/arm64  -t fcleanspeak/cleanspeak-webservice:latest .
+#   > docker buildx build --platform=linux/arm64 -t cleanspeak/cleanspeak-app:4.0.0 .
 #
 # Note: Substiture your target platform architecture. The above example is targetting a 64-bit ARM platform.
 #       To target an Intel based platform use --platform=linux/amd64.
 #
 # Run:
-#  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-webservice
+#  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-app
 #
 # Publish:
-#   > docker push cleanspeak/cleanspeak-webservice:4.0.0
-#   > docker push cleanspeak/cleanspeak-webservice:latest
+#   > docker push cleanspeak/cleanspeak-app:4.0.0
 #
 
 ###### Setup the java and fusionauth-app base #####################################################
