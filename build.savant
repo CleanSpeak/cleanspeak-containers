@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2023, Inversoft, All Rights Reserved
+ * Copyright (c) 2018-2024, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 
-project(group: "com.inversoft.cleanspeak", name: "cleanspeak-containers", version: "3.33.0", licenses: ["ApacheV2_0"]) {
+project(group: "com.inversoft.cleanspeak", name: "cleanspeak-containers", version: "4.0.0", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()
@@ -32,8 +32,7 @@ project(group: "com.inversoft.cleanspeak", name: "cleanspeak-containers", versio
 
   publications {
     docker {
-      publication(name: "cleanspeak-webservice-dockerfile", type: "docker", file: "docker/cleanspeak/cleanspeak-webservice/Dockerfile")
-      publication(name: "cleanspeak-management-interface-dockerfile", type: "docker", file: "docker/cleanspeak/cleanspeak-management-interface/Dockerfile")
+      publication(name: "cleanspeak-dockerfile", type: "docker", file: "docker/cleanspeak/cleanspeak/Dockerfile")
       publication(name: "cleanspeak-docker-compose", type: "yml", file: "docker/cleanspeak/docker-compose.yml")
     }
   }
@@ -66,7 +65,7 @@ target(name: "release", description: "Releases a full version of the project") {
 }
 
 target(name: "publish", description: "Releases the Docker images to DockerHub") {
-  def args = ["./publish.sh", "${project.version}" as String , "${project.version.preRelease}" as String]
+  def args = ["./publish.sh", "${project.version}" as String, "${project.version.preRelease}" as String]
   ProcessBuilder pb = new ProcessBuilder(args).inheritIO().directory(new File('./docker/cleanspeak'))
 
   def process = pb.start()
