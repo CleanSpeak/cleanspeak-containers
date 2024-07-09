@@ -16,19 +16,30 @@ curl -o .env https://raw.githubusercontent.com/CleanSpeak/cleanspeak-containers/
 docker-compose up
 ```
 
-### Docker Images
+### Docker Images (4.x)
 
-|   | Management Interface | Webservice |
-|---| -------------------- | ---------- |
+[![Dockerhub](https://img.shields.io/docker/v/cleanspeak/cleanspeak-app)](https://hub.docker.com/repository/docker/cleanspeak/cleanspeak-app)
+
+```bash
+docker pull cleanspeak/cleanspeak-app:latest
+docker run -itp 8001:8001 cleanspeak/cleanspeak-app:latest
+```
+
+### Docker Images (3.x)
+
+|                     | Management Interface                                                                                                                                                            | Webservice                                                                                                                                                  |
+|---------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Most recent version | [![Dockerhub](https://img.shields.io/docker/v/cleanspeak/cleanspeak-management-interface)](https://hub.docker.com/repository/docker/cleanspeak/cleanspeak-management-interface) | [![Dockerhub](https://img.shields.io/docker/v/cleanspeak/cleanspeak-webservice)](https://hub.docker.com/repository/docker/cleanspeak/cleanspeak-webservice) |
 
 CleanSpeak Management Interface
+
 ```bash
 docker pull cleanspeak/cleanspeak-management-interface:latest
 docker run -itp 8011:8011 cleanseak/cleanspeak-management-interface:latest
 ```
 
 CleanSpeak Webservice
+
 ```bash
 docker pull cleanspeak/cleanspeak-webservice:latest
 docker run -itp 8001:8001 cleanspeak/cleanspeak-webservice:latest
@@ -37,7 +48,9 @@ docker run -itp 8001:8001 cleanspeak/cleanspeak-webservice:latest
 ## Kubernetes
 
 ### Notice
-The Kubernetes portion of this repository is community maintained; and is provided to assist in your deployment and management of FusionAuth. Use of this software is not covered under the CleanSpeak license agreement and is provided "as is" without warranty.  https://cleanspeak.com/license
+
+The Kubernetes portion of this repository is community maintained; and is provided to assist in your deployment and management of FusionAuth. Use of
+this software is not covered under the CleanSpeak license agreement and is provided "as is" without warranty.  https://cleanspeak.com/license
 
 ```
 kubernetes
