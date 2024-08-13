@@ -2,7 +2,6 @@
 # CleanSpeak App Dockerfile
 #
 # Build:
-#   > docker pull ubuntu:jammy
 #   > docker buildx build --platform=linux/arm64 -t cleanspeak/cleanspeak-app:4.0.0 .
 #
 # Note: Substiture your target platform architecture. The above example is targetting a 64-bit ARM platform.
@@ -16,7 +15,7 @@
 #
 
 ###### Setup the java and fusionauth-app base #####################################################
-FROM --platform=$BUILDPLATFORM ubuntu:jammy as build
+FROM --platform=$BUILDPLATFORM ubuntu:noble as build
 
 ARG BUILDPLATFORM
 ARG CLEANSPEAK_VERSION=4.0.2
@@ -85,7 +84,7 @@ RUN case "${BUILDPLATFORM}" in \
      && unzip -nq /tmp/cleanspeak-app.zip -d /usr/local/cleanspeak
 
 ###### Use Ubuntu latest and only copy in what we need to reduce the layer size ###################
-FROM ubuntu:jammy
+FROM ubuntu:noble
 RUN apt-get update \
     && apt-get -y install --no-install-recommends curl \
     && apt-get -y upgrade \
