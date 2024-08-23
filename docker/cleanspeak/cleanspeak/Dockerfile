@@ -15,6 +15,7 @@
 #
 
 ###### Setup the java and fusionauth-app base #####################################################
+# If you change the distro, test that weekly report PDF generation works first
 FROM --platform=$BUILDPLATFORM ubuntu:noble as build
 
 ARG BUILDPLATFORM
@@ -84,9 +85,11 @@ RUN case "${BUILDPLATFORM}" in \
      && unzip -nq /tmp/cleanspeak-app.zip -d /usr/local/cleanspeak
 
 ###### Use Ubuntu latest and only copy in what we need to reduce the layer size ###################
+# If you change the distro, test that weekly report PDF generation works first
 FROM ubuntu:noble
 RUN apt-get update \
-    && apt-get -y install --no-install-recommends curl \
+    # fontconfig is needed by pdfbox (brings along libfreetype6)
+    && apt-get -y install --no-install-recommends curl fontconfig \
     && apt-get -y upgrade \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists \
