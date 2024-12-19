@@ -22,11 +22,11 @@
 # -----------------------------------------------------------------------------
 #
 # Build:
-#   > docker build -t cleanspeak/cleanspeak-app-mysql:4.2.0 .
+#   > docker build -t cleanspeak/cleanspeak-app-mysql:4.2.1 .
 #
 # Run:
 #  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-app-mysql
 #
 
-FROM cleanspeak/cleanspeak-app:4.2.0
+FROM cleanspeak/cleanspeak-app:4.2.1
 ADD --chown=cleanspeak:cleanspeak https://search.maven.org/remotecontent?filepath=com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar /usr/local/cleanspeak/cleanspeak-app/lib
