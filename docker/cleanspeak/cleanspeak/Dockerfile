@@ -33,29 +33,23 @@ RUN --mount=type=bind,target=/ctx apt-get update \
     && JAVA_VERSION_URL="jdk-$(echo "${JAVA_VERSION}" | sed 's/_/%2B/g')" \
     && BUILD_JAVA_SUM="$(jq -r '.checksums.jdk["'"${BUILDARCH}"'"]' /ctx/java.json)" \
     && BUILD_JAVA_URL="https://github.com/adoptium/temurin${JAVA_MAJOR}-binaries/releases/download/${JAVA_VERSION_URL}/OpenJDK${JAVA_MAJOR}U-jdk_$(echo "${BUILDPLATFORM}" | sed 's|linux/||;s|arm64|aarch64|;s|amd64|x64|')_linux_hotspot_${JAVA_VERSION}.tar.gz" \
-    && JAVA_SUM="$(jq -r '.checksums.jdk["'"${TARGETARCH}"'"]' /ctx/java.json)" \
-    && JAVA_URL="https://github.com/adoptium/temurin${JAVA_MAJOR}-binaries/releases/download/${JAVA_VERSION_URL}/OpenJDK${JAVA_MAJOR}U-jdk_$(echo "${TARGETARCH}" | sed 's|arm64|aarch64|;s|amd64|x64|')_linux_hotspot_${JAVA_VERSION}.tar.gz" \
     && JMODS_URL="https://github.com/adoptium/temurin${JAVA_MAJOR}-binaries/releases/download/${JAVA_VERSION_URL}/OpenJDK${JAVA_MAJOR}U-jmods_$(echo "${TARGETARCH}" | sed 's|arm64|aarch64|;s|amd64|x64|')_linux_hotspot_${JAVA_VERSION}.tar.gz" \
     && JMODS_SUM="$(jq -r '.checksums.jmods["'"${TARGETARCH}"'"]' /ctx/java.json)" \
-    && mkdir -p /tmp/target/openjdk \
     && mkdir -p /tmp/target/jmods \
     && mkdir -p /tmp/build/openjdk \
     && curl -LfsSo /tmp/build/openjdk.tar.gz "${BUILD_JAVA_URL}" \
         && echo "${BUILD_JAVA_SUM} */tmp/build/openjdk.tar.gz" | sha256sum -c - \
-    && curl -LfsSo /tmp/target/openjdk.tar.gz "${JAVA_URL}" \
-    && echo "${JAVA_SUM} */tmp/target/openjdk.tar.gz" | sha256sum -c - \
     && curl -LfsSo /tmp/target/jmods/jmods.tar.gz "${JMODS_URL}" \
     && echo "${JMODS_SUM} */tmp/target/jmods/jmods.tar.gz" | sha256sum -c - \
-        && cd /tmp/build/openjdk \
-        && tar -xf /tmp/build/openjdk.tar.gz --strip-components=1 \
+    && cd /tmp/build/openjdk \
+    && tar -xf /tmp/build/openjdk.tar.gz --strip-components=1 \
     && cd /tmp/target/jmods \
     && tar -xf /tmp/target/jmods/jmods.tar.gz --strip-components=1 \
-    && cd /tmp/target/openjdk \
-    && tar -xf /tmp/target/openjdk.tar.gz --strip-components=1 \
-    && /tmp/build/openjdk/bin/jlink --compress=2 --verbose \
+    && /tmp/build/openjdk/bin/jlink --compress=2 \
+           --verbose \
            --module-path /tmp/target/jmods/ \
-       --add-modules ${JDK_MODULES} \
-       --output /opt/openjdk \
+           --add-modules ${JDK_MODULES} \
+           --output /opt/openjdk \
     && if [ -f /ctx/cleanspeak-app-${CLEANSPEAK_VERSION}.zip ]; then \
              cp /ctx/cleanspeak-app-${CLEANSPEAK_VERSION}.zip /tmp/cleanspeak-app.zip; \
          else \
@@ -70,7 +64,8 @@ RUN --mount=type=bind,target=/ctx apt-get update \
      && printf "Package: openjdk-${JAVA_MAJOR}-jdk\nSource: openjdk-${JAVA_MAJOR}\nVersion: ${JAVA_DEB_VERSION}\nArchitecture: ${DEB_TARGETARCH}\nMaintainer: Eclipse Adoptium <temurin@adoptium.net>\nDescription: Eclipse Temurin JDK ${JAVA_MAJOR} (security metadata shim)\n" \
              > /tmp/jdk-shim/DEBIAN/control \
      && dpkg-deb --build /tmp/jdk-shim /tmp/jdk-shim.deb \
-     && rm -rf /tmp/jdk-shim
+     && rm -rf /tmp/jdk-shim \
+     && cat /ctx/blocked.certs >> /opt/openjdk/lib/security/blocked.certs
 
 ###### Use Ubuntu latest and only copy in what we need to reduce the layer size ###################
 # If you change the distro, test that weekly report PDF generation works first
