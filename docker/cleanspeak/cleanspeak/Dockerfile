@@ -11,7 +11,7 @@
 #  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-app
 #
 # Publish:
-#   > docker push cleanspeak/cleanspeak-app:4.2.5
+#   > docker push cleanspeak/cleanspeak-app:4.2.6
 #
 
 ###### Setup the java and cleanspeak-app base #####################################################
@@ -20,7 +20,7 @@ FROM --platform=$BUILDPLATFORM ubuntu:noble AS build
 
 ARG BUILDARCH
 ARG BUILDPLATFORM
-ARG CLEANSPEAK_VERSION=4.2.5
+ARG CLEANSPEAK_VERSION=4.2.6
 ARG JDK_MODULES=java.base,java.compiler,java.desktop,java.instrument,java.logging,java.management,java.naming,java.net.http,java.rmi,java.security.jgss,java.security.sasl,java.scripting,java.sql,java.xml.crypto,jdk.attach,jdk.crypto.ec,jdk.dynalink,jdk.jcmd,jdk.jdi,jdk.localedata,jdk.unsupported,jdk.zipfs
 ARG TARGETPLATFORM
 ARG TARGETARCH
