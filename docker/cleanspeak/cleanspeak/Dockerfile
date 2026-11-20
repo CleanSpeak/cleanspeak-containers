@@ -11,7 +11,7 @@
 #  > docker run -p 8001:8001 -it cleanspeak/cleanspeak-app
 #
 # Publish:
-#   > docker push cleanspeak/cleanspeak-app:4.2.7
+#   > docker push cleanspeak/cleanspeak-app:4.2.8
 #
 
 ###### Setup the java and cleanspeak-app base #####################################################
@@ -20,7 +20,7 @@ FROM --platform=$BUILDPLATFORM ubuntu:noble AS build
 
 ARG BUILDARCH
 ARG BUILDPLATFORM
-ARG CLEANSPEAK_VERSION=4.2.7
+ARG CLEANSPEAK_VERSION=4.2.8
 ARG JDK_MODULES=java.base,java.compiler,java.desktop,java.instrument,java.logging,java.management,java.naming,java.net.http,java.rmi,java.security.jgss,java.security.sasl,java.scripting,java.sql,java.xml.crypto,jdk.attach,jdk.crypto.ec,jdk.dynalink,jdk.jcmd,jdk.jdi,jdk.localedata,jdk.unsupported,jdk.zipfs
 ARG TARGETPLATFORM
 ARG TARGETARCH
@@ -58,10 +58,8 @@ RUN --mount=type=bind,target=/ctx apt-get update \
      && mkdir -p /usr/local/cleanspeak/cleanspeak-app \
      && unzip -nq /tmp/cleanspeak-app.zip -d /usr/local/cleanspeak \
      && JAVA_DEB_VERSION="$(echo "${JAVA_VERSION}" | sed 's/_/+/')-99" \
-     && DEB_TARGETARCH="${TARGETARCH}" \
-     && if [ "${TARGETARCH}" = "ppc64le" ]; then DEB_TARGETARCH="ppc64el"; fi \
      && mkdir -p /tmp/jdk-shim/DEBIAN \
-     && printf "Package: openjdk-${JAVA_MAJOR}-jdk\nSource: openjdk-${JAVA_MAJOR}\nVersion: ${JAVA_DEB_VERSION}\nArchitecture: ${DEB_TARGETARCH}\nMaintainer: Eclipse Adoptium <temurin@adoptium.net>\nDescription: Eclipse Temurin JDK ${JAVA_MAJOR} (security metadata shim)\n" \
+     && printf "Package: openjdk-${JAVA_MAJOR}-jdk\nSource: openjdk-${JAVA_MAJOR}\nVersion: ${JAVA_DEB_VERSION}\nArchitecture: ${TARGETARCH}\nMaintainer: Eclipse Adoptium <temurin@adoptium.net>\nDescription: Eclipse Temurin JDK ${JAVA_MAJOR} (security metadata shim)\n" \
              > /tmp/jdk-shim/DEBIAN/control \
      && dpkg-deb --build /tmp/jdk-shim /tmp/jdk-shim.deb \
      && rm -rf /tmp/jdk-shim \
